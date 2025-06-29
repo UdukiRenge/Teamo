@@ -1,0 +1,82 @@
+.container {
+  margin-top: 45px;
+  margin-bottom: 45px;
+  height: calc(100vh - 90px);
+  min-height: 600px;
+  width: 100vw;
+  background-image: url('/notebook.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.note-container {
+  height: 80%;
+  width: 70%;
+  min-width: 300px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.title{
+  margin-top: 40px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.table {
+  margin-top: 20px;
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+.version {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.changeList {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 14px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+  }
+}
+
+.buttons{
+  margin-top: auto;
+  margin-bottom: 30px;
+  width: 10%;
+  z-index: 10px;
+}

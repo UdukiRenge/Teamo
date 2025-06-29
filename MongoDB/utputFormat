@@ -1,0 +1,10 @@
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 175
+ETag: W/"af-ZuWjsqX3hlDUXM4b1AVcmnywW3I"
+Date: Fri, 28 Feb 2025 17:58:34 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"ユーザー作成エラー: User validation failed: user_name: Path `user_name` is required., password: Path `password` is required., _id: Path `_id` is required."}

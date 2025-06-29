@@ -1,0 +1,150 @@
+.customFolder {
+  display: flex;
+  align-items: center; /* ボタンを縦方向の中央に揃える */
+  position: relative;
+}
+
+.list-header {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #a8a8a8;
+  border: none;
+  text-align: left;
+  font-size: 0.8rem;
+  flex-grow: 1; /* メニューボタンを固定しつつ、カスタムフォルダボタンを可変幅に */
+}
+
+.list-header:hover {
+  background-color: #555; /* オンマウスの時に色を少し明るく */
+}
+
+.folderPlus-button {
+  margin-left: 1px;
+  margin-right: 1px;
+  background-color: #333;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folderPlus-button:hover {
+  background-color: #555; /* オンマウスの時に色を少し明るく */
+}
+
+.folderMenu-button {
+  margin-left: 1px;
+  margin-right: 1px;
+  background-color: #333;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folderMenu-button:hover {
+  background-color: #555; /* オンマウスの時に色を少し明るく */
+}
+
+.FolderCD-container {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  width: 50%;
+  min-width: 110px;
+  padding: 1px;
+}
+
+.FolderCD-buttons {
+  text-align: left;
+  margin: 0;
+  font-weight: normal;
+}
+
+.FolderCD-buttons:hover {
+  border: 1px solid #a7a7a7;
+  background-color: #f0f0f0;
+}
+
+.redLine {
+  color: #ff0000;
+  margin: 0;
+}
+
+.folder-list {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  max-height: calc(100vh - 197px);
+  overflow-y: auto;
+  background-color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-container {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.Folder-input {
+  width: 90%;
+}
+
+.Folder-button {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-left: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  overflow: hidden;
+}
+
+.Folder-button img {
+  width: 50px;
+  height: 50px;
+  margin-right: 8px;
+}
+
+.Folder-button:hover {
+  background-color: #555;
+}
+
+.newFolder {
+  width: 90%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  overflow: hidden;
+}
+
+.newFolder img {
+  width: 50px;
+  height: 50px;
+  margin-right: 8px;
+}
+
+.newFolder input {
+  width: 90%;
+}
+
+.newFolder:hover {
+  background-color: #555;
+}
