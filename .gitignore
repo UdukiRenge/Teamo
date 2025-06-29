@@ -9,6 +9,8 @@ lerna-debug.log*
 
 node_modules
 /MongoDB/node_modules
+.env
+/MongoDB/.env
 dist
 dist-ssr
 *.local

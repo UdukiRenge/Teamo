@@ -35,7 +35,7 @@ userRoutes.post('/login', async (request, response, next) => {
     // アクセストークンを Cookie に設定
     response.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: false, // 本番では true
+      secure: true, // 本番では true
       sameSite: 'Lax',
       maxAge: 15 * 60 * 1000, // 15分
     });
@@ -43,7 +43,7 @@ userRoutes.post('/login', async (request, response, next) => {
     // リフレッシュトークンを Cookie に設定
     response.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      secure: false, // 本番では true
+      secure: true, // 本番では true
       sameSite: 'Lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7日
     });
@@ -92,14 +92,14 @@ userRoutes.post('/logout', verifyToken, async (request, response, next) => {
     // アクセストークン破棄
     response.clearCookie('access_token', {
       httpOnly: true,
-      secure: false, // 本番は true
+      secure: true, // 本番は true
       sameSite: 'Lax',
     });
 
     // リフレッシュトークン破棄
     response.clearCookie('refresh_token', {
       httpOnly: true,
-      secure: false, // 本番は true
+      secure: true, // 本番は true
       sameSite: 'Lax',
     });
 
