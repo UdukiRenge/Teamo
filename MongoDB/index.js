@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 // CORS設定（全てのオリジンを許可）
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://teamo-puce.vercel.app/',
   credentials: true
 }));
 
