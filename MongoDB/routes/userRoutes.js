@@ -72,7 +72,7 @@ userRoutes.post('/refresh', verifyRefreshToken, async (request, response, next) 
     // クッキーにセット
     response.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: false, // 本番は true に
+      secure: true, // 本番は true に
       sameSite: 'Lax',
       maxAge: 15 * 60 * 1000,
     });
