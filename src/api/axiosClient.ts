@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // ベースURLを環境変数から取得
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const baseURL = `${import.meta.env.VITE_API_URL}/api`;
 
 // 認証不要API用（シンプル、インターセプターなし）
 export const axiosPublicClient = axios.create({
