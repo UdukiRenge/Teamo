@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import { useErrorModal } from '../components/Hooks/useErrorModal';
-import { useAlertModal } from '../components/Hooks/useAlertModal';
 
 import { messages } from '../constants/message'
 import { MemoInterface, FolderInterface } from '../constants/stateInterface';
@@ -20,7 +19,6 @@ import styles from './Memo.module.css';
 
 const Memo: React.FC = () => {
   const showErrorModal = useErrorModal();
-  const showAlertModal = useAlertModal();
 
   const { user } = useUserContext();
 

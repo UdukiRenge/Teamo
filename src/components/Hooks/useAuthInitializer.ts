@@ -16,7 +16,7 @@ import { useErrorModal } from './useErrorModal';
 // ➂➁で取得したユーザー情報をコンテクストに保存
 export const useAuthInitializer = () => {
   const { user, setUser } = useUserContext();
-  const [isLogin, setIsLogin] = useAtom(isLoginAtom);
+  const [_isLogin, setIsLogin] = useAtom(isLoginAtom);
 
   const navigate = useNavigate();
   const showErrorModal = useErrorModal();
