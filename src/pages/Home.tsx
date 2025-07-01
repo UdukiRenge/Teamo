@@ -18,7 +18,7 @@ import styles from './Home.module.css';
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] = useAtom(isLoginAtom);
+  const [_isLogin, setIsLogin] = useAtom(isLoginAtom);
   
   const showErrorModal = useErrorModal();
   const showPopup = usePopup();
