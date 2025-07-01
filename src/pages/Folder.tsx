@@ -12,7 +12,6 @@ import {
 
 import { useUserContext } from '../contexts/UserContext';
 
-import { useAlertModal } from '../components/Hooks/useAlertModal';
 import { useErrorModal } from '../components/Hooks/useErrorModal';
 import { usePopup } from '../components/Hooks/usePopup';
 
@@ -54,7 +53,6 @@ export const CustomFolder: React.FC<FolderProps> = ({
   }>({ top: 0, left: 0 });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const showAlertModal = useAlertModal();
   const showErrorModal = useErrorModal();
   const showPopup = usePopup();
 
