@@ -36,7 +36,7 @@ userRoutes.post('/login', async (request, response, next) => {
     response.cookie('access_token', accessToken, {
       httpOnly: true,
       secure: true, // 本番では true
-      sameSite: 'Lax',
+      sameSite: 'None',
       maxAge: 15 * 60 * 1000, // 15分
     });
 
@@ -44,7 +44,7 @@ userRoutes.post('/login', async (request, response, next) => {
     response.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: true, // 本番では true
-      sameSite: 'Lax',
+      sameSite: 'None',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7日
     });
 
@@ -73,7 +73,7 @@ userRoutes.post('/refresh', verifyRefreshToken, async (request, response, next) 
     response.cookie('access_token', accessToken, {
       httpOnly: true,
       secure: true, // 本番は true に
-      sameSite: 'Lax',
+      sameSite: 'None',
       maxAge: 15 * 60 * 1000,
     });
 
@@ -93,14 +93,14 @@ userRoutes.post('/logout', verifyToken, async (request, response, next) => {
     response.clearCookie('access_token', {
       httpOnly: true,
       secure: true, // 本番は true
-      sameSite: 'Lax',
+      sameSite: 'None',
     });
 
     // リフレッシュトークン破棄
     response.clearCookie('refresh_token', {
       httpOnly: true,
       secure: true, // 本番は true
-      sameSite: 'Lax',
+      sameSite: 'None',
     });
 
     response.status(200).json({ success: true });
