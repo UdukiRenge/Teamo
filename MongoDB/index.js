@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 // CORS設定（全てのオリジンを許可）
 app.use(cors({
-  origin: 'https://teamo-puce.vercel.app',
+  origin: 'https://teamo-uduki-renges-projects.vercel.app/',
   credentials: true
 }));
 
