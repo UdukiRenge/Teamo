@@ -2,11 +2,14 @@ import styles from './Header.module.css'
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import { MdAccountCircle } from "react-icons/md";
+import { IoMdMenu } from "react-icons/io";
 
 import { isLoginAtom } from '../atoms/loginAtom'
+import { isMobileAtom } from '../atoms/mediaAtom';
+import { viewModeAtom, previousViewModeAtom } from '../atoms/viewmodeAtom';
 import { useUserContext } from '../contexts/UserContext';
 
 import { useAlertModal } from '../components/Hooks/useAlertModal';
@@ -16,10 +19,20 @@ import { messages } from '../constants/message';
 
 import { logoutUser } from '../api/userApi'
 
+
+
 const Header: React.FC = () => {
+  // 現在のパスを取得
+  const location = useLocation(); 
+  const currentPath = location.pathname;
+  const isMobile = useAtomValue(isMobileAtom);
+
+  // 端末がスマホかつ、メモ画面が開かれているときにメニューボタンをヘッダーに追加
+  const isOpenFolder = isMobile && currentPath === '/Memo';
   
   return (
     <header className={styles.header}>
+      {isOpenFolder && <FolderMenu/>}
       <h1 className={styles.title}>Teamo</h1>
       <LoginMenu/>
     </header>
@@ -28,7 +41,30 @@ const Header: React.FC = () => {
 
 export default Header;
 
-const LoginMenu: React. FC = () => {
+const FolderMenu: React.FC = () => {
+  const [viewMode, setViewMode] = useAtom(viewModeAtom);
+  const [previousViewMode, setPreviousViewMode] = useAtom(previousViewModeAtom);
+
+  // メニューボタンを押下した場合の処理
+  const handleFolderOpen = () => {
+    if (viewMode === "folder") {
+      // 現在のモードがfolderの場合、1つ前のモードに戻す。
+      setViewMode(previousViewMode);
+    } else {
+      // 現在のモードがfolder以外の場合、現在のモードを保持した後にfolderモードに切り替える。
+      setPreviousViewMode(viewMode);
+      setViewMode("folder");
+    }
+  }
+
+  return (
+    <button onClick={handleFolderOpen} className={styles.menuButton}>
+      <IoMdMenu size="20" color="#FFFFFF" />
+    </button>
+  );
+}
+
+const LoginMenu: React.FC = () => {
   const [isLogin, setIsLogin] = useAtom(isLoginAtom);
 
   const { user, setUser } = useUserContext();
@@ -43,9 +79,6 @@ const LoginMenu: React. FC = () => {
 
   // メニューのref
   const wrapperRef = useRef<HTMLDivElement>(null);
-
-  // 現在のパスを取得
-  const currentPath = location.pathname;
 
   // ログアウトを実施
   const logoutFunc = async () => {
@@ -71,26 +104,27 @@ const LoginMenu: React. FC = () => {
 
   // メモ画面でブラウザバックを検知した場合、ログアウト処理を実施する。
   useEffect(() => {
-  const handlePopState = async () => {
-    // ブラウザバック時にモーダルの後ろで画面遷移してしまう事象を防いでいる。
-    window.history.pushState({ user }, '', window.location.pathname);
-    
-    // パスが"Memo"であればブラウザバック処理を実行
-    if (currentPath === '/Memo') {
-      await logoutFunc();
-    } else {
-      return;
-    }
-  };
+    const handlePopState = async () => {
+      const currentPath = location.pathname;
+      // ブラウザバック時にモーダルの後ろで画面遷移してしまう事象を防いでいる。
+      window.history.pushState({ user }, '', window.location.pathname);
+      
+      // パスが"Memo"であればブラウザバック処理を実行
+      if (currentPath === '/Memo') {
+        await logoutFunc();
+      } else {
+        return;
+      }
+    };
 
-  window.addEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handlePopState);
 
-  return () => {
-    window.removeEventListener('popstate', handlePopState);
-  };
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [location.pathname]); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]); 
 
   // ユーザー情報管理画面に遷移
   const navigateUserManage = () => {

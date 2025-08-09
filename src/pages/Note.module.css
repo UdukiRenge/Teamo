@@ -78,5 +78,5 @@
   margin-top: auto;
   margin-bottom: 30px;
   width: 10%;
-  z-index: 10px;
+  min-width: 80px;
 }
