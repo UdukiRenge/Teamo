@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useAtom } from 'jotai';
 
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -10,6 +11,7 @@ import {
   deleteCustomFolder,
 } from '../api/customFolderApi';
 
+import { viewModeAtom } from '../atoms/viewmodeAtom'
 import { useUserContext } from '../contexts/UserContext';
 
 import { useErrorModal } from '../components/Hooks/useErrorModal';
@@ -34,6 +36,7 @@ export const CustomFolder: React.FC<FolderProps> = ({
   setSelectedFolder,
   onRefresh,
 }) => {
+  const [_viewMode, setViewMode] = useAtom(viewModeAtom);
   const { user } = useUserContext();
 
   // リストの開閉状態
@@ -141,6 +144,12 @@ export const CustomFolder: React.FC<FolderProps> = ({
     setEditFolderName(event.target.value);
   };
 
+  // フォルダボタン押下
+  const pushFolder = (folder: FolderInterface) => {
+    setSelectedFolder(folder);
+    setViewMode("files");
+  };
+
   // フォルダインプットからカーソルが外れた場合、またはEnterが押下された時に作成・更新処理を実施
   const handleSubmitFolderName = async () => {
     if (isSubmitting) {
@@ -218,7 +227,7 @@ export const CustomFolder: React.FC<FolderProps> = ({
             <div key={folder._id} className={styles["folder-container"]}>
               <button
                 className={styles["Folder-button"]}
-                onClick={() => setSelectedFolder(folder)}
+                onClick={() => pushFolder(folder)}
               >
                 <img src="/folder.png" alt="folder icon" />
                 {renameFlg && openMenu && selectedFolder?._id === folder._id ? (
