@@ -12,6 +12,8 @@ import Memo from './pages/Memo';
 import Inquirie from './pages/Inquirie';
 import Note from './pages/Note';
 
+import { CheckMedia } from './components/CheckMedia'
+
 // カスタムフック
 import UserManage from './pages/UserManage';
 import AlertModal from './components/Modal';
@@ -23,6 +25,7 @@ function App() {
     <Provider>
       <UserProvider>
         <Router>
+          <CheckMedia />
           <Header />
           <Footer />
           <Routes>
