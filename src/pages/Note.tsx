@@ -19,6 +19,13 @@ const releaseNotes: ReleaseItem[] = [
       'リリースしました。',
     ],
   },
+  {
+    date: '2025-08-10',
+    version: 'v2.0.0',
+    changes: [
+      'スマートフォン・タブレット向けのレイアウトを作成しました。',
+    ],
+  },
 ];
 
 const Note: React.FC = () => {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAtom } from 'jotai';
 
 import { LuFileCheck } from 'react-icons/lu';
 import { IoClose } from "react-icons/io5";
@@ -14,6 +15,7 @@ import {
   updateMemo
 } from '../api/memoApi';
 
+import { viewModeAtom } from '../atoms/viewmodeAtom';
 import { useUserContext } from '../contexts/UserContext';
 
 import styles from './Editer.module.css';
@@ -45,6 +47,7 @@ export const MemoEdit: React.FC<EditProps> = ({
   const showErrorModal = useErrorModal();
   const showPopup = usePopup();
 
+  const [viewMode, setViewMode] = useAtom(viewModeAtom);
   const { user } = useUserContext();
 
   // 保存先フォルダ
@@ -100,19 +103,22 @@ export const MemoEdit: React.FC<EditProps> = ({
         setIsEditting(true);
       }
     } else if (editType === 'update') {
+      if (!selectedMemo) {
+        return;
+      }
       if (
-        selectedMemo &&
-        (
-          selectedMemo.title !== title ||
-          (selectedMemo.folder_id !== saveFolder && selectedMemo.folder_id) ||
-          selectedMemo.text !== text
-        )
+        selectedMemo.title !== title ||
+        (selectedMemo.folder_id !== saveFolder && selectedMemo.folder_id) ||
+        selectedMemo.text !== text
       ) {
         setIsEditting(true);
+      } else {
+        // falseも明示することで、レスポンシブル対応時のイベントの呼出し順の差異に対応
+        setIsEditting(false);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [saveFolder, title, text])
+  }, [saveFolder, title, text]);
 
   // メモを保存する。
   const saveMemoFanction = async () => {
@@ -191,10 +197,11 @@ export const MemoEdit: React.FC<EditProps> = ({
     cancelEditInfo();
     cancelEdit();
     setSelectedMemo(null);
+    setViewMode("files");
   }
 
   return (
-    <section className={styles["memo-section"]}>
+    <section className={`${styles['memo-section']} ${viewMode === "folder" ? styles['dimmed'] : ''}`}>
       {(editType) && (
         <>
           <input 

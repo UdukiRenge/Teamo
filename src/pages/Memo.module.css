@@ -8,12 +8,37 @@
 }
 
 /* フォルダ */
-
 .folder-section {
   width: 20%;
   min-width: 175px;
   background-color: #333;
   color: white;
+}
+
+.folder-overlay {
+  position: fixed;
+  left: 80%;
+  width: 20%;
+  height: calc(100vh - 90px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+@media (max-width: 1000px) {
+  .folder-section {
+    position: absolute;
+    left: -80%; /* 初期状態で非表示 */
+    width: 80%;
+    height: calc(100vh - 90px);
+    z-index: 10;
+    background-color: #333;
+    transition: left 0.3s ease-in-out;
+  }
+
+  /* data-open が true のときにスライドイン */
+  .folder-section[data-open="true"] {
+    left: 0;
+  }
 }
 
 .allFolder-container {

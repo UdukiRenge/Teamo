@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAtom } from 'jotai';
 
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoTrashOutline } from 'react-icons/io5';
+
+import { viewModeAtom } from '../atoms/viewmodeAtom'
 
 import { MemoInterface, FolderInterface } from '../constants/stateInterface';
 import { deleteMemo } from '../api/memoApi';
@@ -39,6 +42,8 @@ export const Files: React.FC<FilesProps> = ({
   const showAlertModal = useAlertModal();
   const showPopup = usePopup();
 
+  const [viewMode, setViewMode] = useAtom(viewModeAtom);
+
   const [filteredMemos, setFilteredMemos] = useState<MemoInterface []>([]);
   const [searchText, setSearchText] = useState<string>('');
   const [searchedMemos, setSearchedMemos] = useState<MemoInterface []>([]);
@@ -72,6 +77,7 @@ export const Files: React.FC<FilesProps> = ({
 
   // ファイルボタンをクリック
   const onClickMemo = async (searchedMemo: MemoInterface) => {
+    console.log(isEditting);
     if (isEditting) {
       // 編集中のメモがある場合は、確認
       let modalCheck;
@@ -91,6 +97,7 @@ export const Files: React.FC<FilesProps> = ({
     setSelectedMemo(searchedMemo);
     setEditType('update');
     setIsEditting(false);
+    setViewMode("editor");
   };
 
   // 新規作成ボタンをクリック
@@ -107,6 +114,7 @@ export const Files: React.FC<FilesProps> = ({
     setSelectedMemo(null);    
     setEditType('create');
     setIsEditting(false);
+    setViewMode("editor");
   };
   
   // 削除ボタンをクリック
@@ -129,7 +137,7 @@ export const Files: React.FC<FilesProps> = ({
   }
 
   return (
-    <section className={styles["file-section"]}>
+    <section className={`${styles['file-section']} ${viewMode === "folder" ? styles['dimmed'] : ''}`}>
       <div className={styles['fileoption-container']}>
         <div className={styles['fileCD-buttons']}>
           <button 
