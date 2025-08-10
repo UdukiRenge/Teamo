@@ -25,6 +25,14 @@
   overflow-y: auto;
 }
 
+@media (max-width: 1200px) {
+  .note-container {
+    height: 100%;
+    width: 100%;
+    border-radius: 0px;
+  }
+}
+
 .title{
   margin-top: 40px;
   font-size: 25px;
