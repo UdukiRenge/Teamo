@@ -27,6 +27,15 @@
   overflow-y: auto;
 }
 
+@media (max-width: 560px) {
+  .input-container {
+    height: 100%;
+    width: 100%;
+    max-width: none;
+    border-radius: 0px;
+  }
+}
+
 .input-container input {
   margin-top: 10%;
   margin-bottom: 0;
