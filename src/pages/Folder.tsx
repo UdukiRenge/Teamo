@@ -152,6 +152,7 @@ export const CustomFolder: React.FC<FolderProps> = ({
 
   // フォルダインプットからカーソルが外れた場合、またはEnterが押下された時に作成・更新処理を実施
   const handleSubmitFolderName = async () => {
+    // 処理が重複しないよう管理
     if (isSubmitting) {
       return;
     } else {
@@ -159,6 +160,11 @@ export const CustomFolder: React.FC<FolderProps> = ({
     }
     // インプットが空かどうか判別
     if (editFolderName.trim() !== '') {
+      if (editFolderName.length >= 51) {
+        await showErrorModal(messages.ERROR.E016);
+        setIsSubmitting(false);
+        return;
+      }
       if (creatFlg) {
         if (user && user.user_id) {
           const user_id = user.user_id;

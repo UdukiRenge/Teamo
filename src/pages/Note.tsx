@@ -26,6 +26,13 @@ const releaseNotes: ReleaseItem[] = [
       'スマートフォン・タブレット向けのレイアウトを作成しました。',
     ],
   },
+  {
+    date: '2025-08-12',
+    version: 'v2.1.0',
+    changes: [
+      'メモのダウンロード機能を追加しました。',
+    ],
+  },
 ];
 
 const Note: React.FC = () => {
