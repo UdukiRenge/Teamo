@@ -3,6 +3,7 @@ import { useAtom } from 'jotai';
 
 import { LuFileCheck } from 'react-icons/lu';
 import { IoClose } from "react-icons/io5";
+import { LuDownload } from "react-icons/lu";
 
 import { useAlertModal } from '../components/Hooks/useAlertModal'
 import { useErrorModal } from '../components/Hooks/useErrorModal';
@@ -183,7 +184,7 @@ export const MemoEdit: React.FC<EditProps> = ({
         return;
       }
     }
-  }
+  };
 
   // メモを閉じる処理
   const closeMemoFanction = async () => {
@@ -198,6 +199,20 @@ export const MemoEdit: React.FC<EditProps> = ({
     cancelEdit();
     setSelectedMemo(null);
     setViewMode("files");
+  };
+
+  // メモをダウンロードする処理
+  const downloadMemo = () => {
+    const filename = title.trim() !== "" ? `${title}.txt` : "noname.txt";
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    downloadLink.click();
+
+    URL.revokeObjectURL(url); // メモリ解放
   }
 
   return (
@@ -227,22 +242,27 @@ export const MemoEdit: React.FC<EditProps> = ({
             ))}
           </select>
           <div className={styles["edit-options"]}>
-            <>
-              <button 
-                title="保存"
-                className={styles["tool-button"]}
-                onClick={() => saveMemoFanction()}
-              >
-                <LuFileCheck color="#44e782" size={25}/>
-              </button>
-              <button
-                title="閉じる"
-                className={styles["tool-button"]}
-                onClick={() => closeMemoFanction()}
-              >
-                <IoClose color="#cc1c1c" size={25}/>
-              </button>
-            </>
+            <button 
+              title="保存"
+              className={styles["tool-button"]}
+              onClick={() => saveMemoFanction()}
+            >
+              <LuFileCheck color="#44e782" size={25}/>
+            </button>
+            <button
+              title="閉じる"
+              className={styles["tool-button"]}
+              onClick={() => closeMemoFanction()}
+            >
+              <IoClose color="#cc1c1c" size={25}/>
+            </button>
+            <button
+              title="ダウンロード"
+              className={styles["tool-button"]}
+              onClick={() => downloadMemo()}
+            >
+              <LuDownload color="#1c1d31ff" size={25}/>
+            </button>
           </div>
           <textarea 
             className={styles["memo-textarea"]} 
