@@ -33,6 +33,13 @@ const releaseNotes: ReleaseItem[] = [
       'メモのダウンロード機能を追加しました。',
     ],
   },
+  {
+    date: '2025-08-13',
+    version: 'v2.2.0',
+    changes: [
+      'SEO対応を実施しました。',
+    ],
+  },
 ];
 
 const Note: React.FC = () => {
