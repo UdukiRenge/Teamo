@@ -268,7 +268,7 @@ const toggleMenu = (
               </button>
               <button
                 className={styles["folderMenu-button"]}
-                onClick={(event) => toggleMenu(folder, event)}
+                onClick={(event) => toggleMenu(event)}
               >
                 <BsThreeDotsVertical color="#a8a8a8" />
               </button>
