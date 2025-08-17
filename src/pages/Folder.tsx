@@ -117,7 +117,6 @@ export const CustomFolder: React.FC<FolderProps> = ({
 
   // メニューボックスを開く
 const toggleMenu = (
-  folder: FolderInterface,
   event: React.MouseEvent<HTMLButtonElement>
 ) => {
   const rect = event.currentTarget.getBoundingClientRect();
