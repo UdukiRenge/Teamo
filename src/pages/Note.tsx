@@ -40,6 +40,14 @@ const releaseNotes: ReleaseItem[] = [
       'SEO対応を実施しました。',
     ],
   },
+    {
+    date: '2025-08-18',
+    version: 'v2.3.0',
+    changes: [
+      'メモの削除方法を変更しました。',
+      '背景画像の読み込み速度を向上させました。'
+    ],
+  },
 ];
 
 const Note: React.FC = () => {
