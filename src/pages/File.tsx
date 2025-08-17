@@ -2,14 +2,11 @@ import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 
 import { AiOutlinePlus } from 'react-icons/ai';
-import { IoTrashOutline } from 'react-icons/io5';
 
-import { viewModeAtom } from '../atoms/viewmodeAtom'
+import { viewModeAtom } from '../atoms/viewmodeAtom';
 
 import { MemoInterface, FolderInterface } from '../constants/stateInterface';
-import { deleteMemo } from '../api/memoApi';
 import { useAlertModal } from '../components/Hooks/useAlertModal';
-import { usePopup } from '../components/Hooks/usePopup';
 import { messages } from '../constants/message';
 
 import styles from './File.module.css';
@@ -36,12 +33,9 @@ export const Files: React.FC<FilesProps> = ({
   editType,
   setEditType,
   isEditting,
-  setIsEditting,
-  onRefresh
+  setIsEditting
 }) => {
   const showAlertModal = useAlertModal();
-  const showPopup = usePopup();
-
   const [viewMode, setViewMode] = useAtom(viewModeAtom);
 
   const [filteredMemos, setFilteredMemos] = useState<MemoInterface []>([]);
@@ -116,25 +110,6 @@ export const Files: React.FC<FilesProps> = ({
     setIsEditting(false);
     setViewMode("editor");
   };
-  
-  // 削除ボタンをクリック
-  const onClickDelete = async () => {
-    // 選択されているメモがある場合は、メモの削除を確認
-    if (selectedMemo) {
-      const modalCheck = await showAlertModal(messages.WARNING.W005);
-
-      if (!modalCheck) {
-        return;
-      }
-
-      await deleteMemo(selectedMemo._id);
-      showPopup(messages.INFO.I004);
-    }
-    setSelectedMemo(null);    
-    setEditType('');
-    setIsEditting(false);
-    onRefresh();
-  }
 
   return (
     <section className={`${styles['file-section']} ${viewMode === "folder" ? styles['dimmed'] : ''}`}>
@@ -145,12 +120,6 @@ export const Files: React.FC<FilesProps> = ({
             onClick={() => onClickCreate()}
           >
             <AiOutlinePlus color="#FFFFFF" />
-          </button>
-          <button
-            className={styles["fileCD-button"]}
-            onClick={() => onClickDelete()}
-          >
-            <IoTrashOutline color="#FFFFFF" />
           </button>
         </div>
         <input 

@@ -11,8 +11,8 @@ import {
   getCustomFolderByUser,
 } from '../api/customFolderApi';
 
-import { isMobileAtom } from '../atoms/mediaAtom'
-import { viewModeAtom, previousViewModeAtom, ViewMode } from '../atoms/viewmodeAtom'
+import { isMobileAtom } from '../atoms/mediaAtom';
+import { viewModeAtom, previousViewModeAtom, ViewMode } from '../atoms/viewmodeAtom';
 import { useUserContext } from '../contexts/UserContext';
 
 import { MemoEdit } from './Editer'
@@ -114,7 +114,7 @@ const Memo: React.FC = () => {
       }
     }
     return confirm;
-  }
+  };
 
   return (
     <div className={styles["main-container"]}>

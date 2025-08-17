@@ -4,6 +4,7 @@ import { useAtom } from 'jotai';
 import { LuFileCheck } from 'react-icons/lu';
 import { IoClose } from "react-icons/io5";
 import { LuDownload } from "react-icons/lu";
+import { IoTrashOutline } from 'react-icons/io5';
 
 import { useAlertModal } from '../components/Hooks/useAlertModal'
 import { useErrorModal } from '../components/Hooks/useErrorModal';
@@ -13,7 +14,8 @@ import { MemoInterface, FolderInterface } from '../constants/stateInterface';
 import { messages } from '../constants/message'
 import {
   createMemo,
-  updateMemo
+  updateMemo,
+  deleteMemo
 } from '../api/memoApi';
 
 import { viewModeAtom } from '../atoms/viewmodeAtom';
@@ -215,6 +217,26 @@ export const MemoEdit: React.FC<EditProps> = ({
     URL.revokeObjectURL(url); // メモリ解放
   }
 
+  // 削除ボタンをクリック
+  const onClickDelete = async () => {
+    // 選択されているメモがある場合は、メモの削除を確認
+    if (selectedMemo) {
+      const modalCheck = await showAlertModal(messages.WARNING.W005);
+
+      if (!modalCheck) {
+        return;
+      }
+
+      await deleteMemo(selectedMemo._id);
+      showPopup(messages.INFO.I004);
+    }
+    setSelectedMemo(null);    
+    setEditType('');
+    setIsEditting(false);
+    setViewMode('files');
+    onRefresh();
+  };
+
   return (
     <section className={`${styles['memo-section']} ${viewMode === "folder" ? styles['dimmed'] : ''}`}>
       {(editType) && (
@@ -263,6 +285,13 @@ export const MemoEdit: React.FC<EditProps> = ({
             >
               <LuDownload color="#1c1d31ff" size={25}/>
             </button>
+            <button
+              title="削除"
+              className={styles["tool-button"]}
+              onClick={() => onClickDelete()}
+            >
+            <IoTrashOutline color="#1c1d31ff" size={25}/>
+          </button>
           </div>
           <textarea 
             className={styles["memo-textarea"]} 

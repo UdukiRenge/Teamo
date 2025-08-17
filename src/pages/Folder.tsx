@@ -116,21 +116,34 @@ export const CustomFolder: React.FC<FolderProps> = ({
   }, [renameFlg, selectedFolder]);
 
   // メニューボックスを開く
-  const toggleMenu = (
-    folder: FolderInterface,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setMenuPosition({
-      top: rect.top + window.scrollY - 160,
-      // top: rect.top + window.scrollY - 152,
-      left: rect.right + window.scrollX,
-    });
-    // Todo:OpenMenuIdを真偽値にできないか検討
-    setSelectedFolder(folder);
-    setOpenMenu(true);
-  };
+const toggleMenu = (
+  folder: FolderInterface,
+  event: React.MouseEvent<HTMLButtonElement>
+) => {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const menuWidth = 200; // メニューの横幅(px)
 
+  let left = rect.right + window.scrollX;
+  const top = rect.top + window.scrollY - 160;
+
+  // 横はみ出し対策
+  if (left + menuWidth > window.innerWidth) {
+    left = rect.left + window.scrollX - menuWidth; // 左側に出す
+  }
+
+  setMenuPosition((prev) => {
+    // 現在位置と変わらない場合 → メニューを閉じる
+    if (prev.top === top && prev.left === left) {
+      setOpenMenu(!openMenu);
+      return prev; // 位置は変更しない
+    }
+    // 位置を更新
+    return { top, left };
+  });
+
+  // 新しい位置の場合のみメニューを開く
+  setOpenMenu(!openMenu);
+};
   // フォルダ新規作成開始
   const createFolder = () => {
     setCreateFlg(true);

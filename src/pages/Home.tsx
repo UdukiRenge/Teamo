@@ -31,6 +31,7 @@ const Home: React.FC = () => {
   const [confirmInput, setConfirmInput] = useState<string>("");
   const [userNameInput, setUserNameInput] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [tokenChecked, setTokenChecked] = useState<boolean>(false);
 
   // ユーザーIDの入力をstateに保存
   const handleChangeUserId = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +103,8 @@ const Home: React.FC = () => {
         // 「システムエラーが発生しました。トップページに遷移します。」
         await showErrorModal(messages.ERROR.E001);
         return;
+      } finally {
+        setTokenChecked(true);
       }
     };
 
@@ -193,6 +196,9 @@ const Home: React.FC = () => {
     }
   }
 
+  if (!tokenChecked) {
+    return null;
+  }
   return (
     <div className={styles["home-container"]}>
       <div className={styles["input-container"]}>
