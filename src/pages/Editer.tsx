@@ -1,25 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
+// アイコン
 import { LuFileCheck } from 'react-icons/lu';
 import { IoClose } from "react-icons/io5";
 import { LuDownload } from "react-icons/lu";
 import { IoTrashOutline } from 'react-icons/io5';
 
+import { viewModeAtom } from '../atoms/viewmodeAtom';
+import { useUserContext } from '../contexts/UserContext';
+
+// カスタムフック
 import { useAlertModal } from '../components/Hooks/useAlertModal'
 import { useErrorModal } from '../components/Hooks/useErrorModal';
 import { usePopup } from '../components/Hooks/usePopup';
 
 import { MemoInterface, FolderInterface } from '../constants/stateInterface';
+
 import { messages } from '../constants/message'
+
 import {
   createMemo,
   updateMemo,
   deleteMemo
 } from '../api/memoApi';
 
-import { viewModeAtom } from '../atoms/viewmodeAtom';
-import { useUserContext } from '../contexts/UserContext';
+import { checkLength } from '../services/checkMaxLength';
+import { htmlToText, sanitizeText } from '../services/sanitizeText';
 
 import styles from './Editer.module.css';
 
@@ -83,17 +92,17 @@ export const MemoEdit: React.FC<EditProps> = ({
     setTitle(event.target.value);
   };
 
-  // 本文を保存
-  const handleChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
-
   // ファイル選択時にメモ欄を表示する。
   useEffect(() => {
     if (selectedMemo) {
       setsaveFolder(selectedMemo?.folder_id || '');
       setTitle(selectedMemo?.title || '');
-      setText(selectedMemo?.text || '');
+      if (selectedMemo?.text || '') {
+        // ReactQuill がマウントされるのを待ってからセット
+        setTimeout(() => {
+          setText(selectedMemo.text!);
+        }, 0);
+      }
     } else if (selectedMemo === null) {
       cancelEditInfo();
     }
@@ -112,7 +121,7 @@ export const MemoEdit: React.FC<EditProps> = ({
       if (
         selectedMemo.title !== title ||
         (selectedMemo.folder_id !== saveFolder && selectedMemo.folder_id) ||
-        selectedMemo.text !== text
+        selectedMemo.text !== sanitizeText(text)
       ) {
         setIsEditting(true);
       } else {
@@ -125,10 +134,11 @@ export const MemoEdit: React.FC<EditProps> = ({
 
   // メモを保存する。
   const saveMemoFanction = async () => {
+
     if (editType === 'create') {
       // 新規作成時
       if (title) {
-        const titleCheck = maxCheckTitle(title);
+        const titleCheck = checkLength(text, 50);
         if (!titleCheck) {
           await showErrorModal(messages.ERROR.E012);
           return;
@@ -140,7 +150,7 @@ export const MemoEdit: React.FC<EditProps> = ({
             user_id,
             folder_id: saveFolder ? saveFolder : undefined,
             title,
-            text: text ? text : undefined,
+            text: text ? sanitizeText(text) : undefined,
           }
 
           await createMemo(memoData);
@@ -167,7 +177,7 @@ export const MemoEdit: React.FC<EditProps> = ({
         const updateData = {
           folder_id: saveFolder ? saveFolder : undefined,
           title: title ? title : undefined,
-          text: text ? text: undefined
+          text: text ? sanitizeText(text): undefined
         }
         await updateMemo(selectedMemo._id, updateData);
         showPopup(messages.INFO.I003);
@@ -206,7 +216,9 @@ export const MemoEdit: React.FC<EditProps> = ({
   // メモをダウンロードする処理
   const downloadMemo = () => {
     const filename = title.trim() !== "" ? `${title}.txt` : "noname.txt";
-    const blob = new Blob([text], { type: "text/plain" });
+
+    const plainText = htmlToText(text);
+    const blob = new Blob([plainText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
     const downloadLink = document.createElement("a");
@@ -293,11 +305,9 @@ export const MemoEdit: React.FC<EditProps> = ({
             <IoTrashOutline color="#1c1d31ff" size={25}/>
           </button>
           </div>
-          <textarea 
-            className={styles["memo-textarea"]} 
-            placeholder="本文を入力..."
+          <Textarea
             value={text}
-            onChange={handleChangeText}
+            onChange={setText}
           />
         </>
       )}
@@ -305,7 +315,29 @@ export const MemoEdit: React.FC<EditProps> = ({
   );
 };
 
-// タイトルの文字数が50字以上になっていないか確認を行う
-const maxCheckTitle = (title: string) => {
-  return title.length < 51;
-} 
+interface TextareaProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const Textarea: React.FC<TextareaProps> = ({ value, onChange }) => {
+
+  const modules = {
+    toolbar: [
+      ["bold", "underline"],
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ color: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+    ],
+  };
+
+  return (
+    <ReactQuill
+      className={`${styles.textarea} custom-quill`}
+      theme="snow"
+      value={value}
+      onChange={onChange}
+      modules={modules}
+    />
+  );
+};

@@ -64,3 +64,19 @@
   border-radius: 8px;
   resize: none;
 }
+
+.textarea {
+  margin-bottom: 75px;
+  padding: 5px;
+  width: 85%;
+  height: 70%;
+  resize: none;
+}
+
+:global(.custom-quill .ql-container.ql-snow) {
+  border: 1px solid #333;
+}
+
+:global(.custom-quill .ql-toolbar.ql-snow) {
+  border: 1px solid #333;
+}
