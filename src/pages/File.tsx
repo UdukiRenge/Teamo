@@ -5,6 +5,8 @@ import { AiOutlinePlus } from 'react-icons/ai';
 
 import { viewModeAtom } from '../atoms/viewmodeAtom';
 
+import { htmlToText } from '../services/sanitizeText'
+
 import { MemoInterface, FolderInterface } from '../constants/stateInterface';
 import { useAlertModal } from '../components/Hooks/useAlertModal';
 import { messages } from '../constants/message';
@@ -71,7 +73,9 @@ export const Files: React.FC<FilesProps> = ({
 
   // ファイルボタンをクリック
   const onClickMemo = async (searchedMemo: MemoInterface) => {
-    console.log(isEditting);
+    if (selectedMemo?._id === searchedMemo._id) {
+      return;
+    }
     if (isEditting) {
       // 編集中のメモがある場合は、確認
       let modalCheck;
@@ -142,7 +146,7 @@ export const Files: React.FC<FilesProps> = ({
             onClick={() => onClickMemo(searchedMemo)}
           >
             <span className={styles["fileButton-title"]}>{searchedMemo.title}</span>
-            <span className={styles["fileButton-description"]}>{searchedMemo.text}</span>
+            <span className={styles["fileButton-description"]}>{searchedMemo.text ? htmlToText(searchedMemo.text) : ""}</span>
           </button>
         ))}
       </div>

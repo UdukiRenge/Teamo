@@ -97,7 +97,7 @@ const Home: React.FC = () => {
         // 状態をログインに変更
         setIsLogin(true);
 
-        // 認証済みならログイン画面をスキップしてトップへ
+        // 認証済みならログイン画面をスキップしてメモ画面へ
         navigate("/Memo");
       } catch {
         // 「システムエラーが発生しました。トップページに遷移します。」
@@ -197,7 +197,10 @@ const Home: React.FC = () => {
   }
 
   if (!tokenChecked) {
-    return null;
+    <div className={styles["spinner-container"]}>
+      <div className={styles.spinner} />
+      <span>ログイン状態を確認しています…</span>
+    </div>
   }
   return (
     <div className={styles["home-container"]}>

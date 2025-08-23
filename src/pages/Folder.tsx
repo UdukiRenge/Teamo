@@ -1,21 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
 
+// アイコン
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-import { FolderInterface } from '../constants/stateInterface';
+import { viewModeAtom } from '../atoms/viewmodeAtom'
+import { useUserContext } from '../contexts/UserContext';
+
 import {
   createCustomFolder,
   updateCustomFolder,
   deleteCustomFolder,
 } from '../api/customFolderApi';
 
-import { viewModeAtom } from '../atoms/viewmodeAtom'
-import { useUserContext } from '../contexts/UserContext';
+import { checkLength } from '../services/checkMaxLength';
 
+// カスタムフック
 import { useErrorModal } from '../components/Hooks/useErrorModal';
 import { usePopup } from '../components/Hooks/usePopup';
+
+import { FolderInterface } from '../constants/stateInterface';
 
 import { messages } from '../constants/message'
 
@@ -172,7 +177,7 @@ const toggleMenu = (
     }
     // インプットが空かどうか判別
     if (editFolderName.trim() !== '') {
-      if (editFolderName.length >= 51) {
+      if (checkLength(editFolderName, 50)) {
         await showErrorModal(messages.ERROR.E016);
         setIsSubmitting(false);
         return;
