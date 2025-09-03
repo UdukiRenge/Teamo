@@ -26,7 +26,8 @@ export const createCustomFolder = async (CustomFolderData: {
 // ユーザーIDを基にフォルダの一覧を取得する。
 export const getCustomFolderByUser = async (user_id: string) => {
   try {
-    const response = await axiosAuthClient.get(`/customFolders/${user_id}`);
+    // const response = await axiosAuthClient.get(`/customFolders/${user_id}`);
+    const response = await axiosAuthClient.get(`/customFolders/byuser/${user_id}`);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
