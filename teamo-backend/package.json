@@ -1,0 +1,26 @@
+{
+  "name": "teamo-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "next": "15.5.0",
+    "path": "^0.12.7",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "url": "^0.11.4"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.0"
+  }
+}

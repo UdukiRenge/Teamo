@@ -162,8 +162,14 @@ const UserManage: React.FC = () => {
     try {
       if (user?.user_id) {
         await deleteUser(user?.user_id);
+        // ユーザー情報をクリア
+        setUser(null);
 
+        // ログイン画面に遷移
         navigate('/');
+
+        // 退会完了のメッセージを表示
+        await showPopup(messages.INFO.I010);
       }
     } catch {
       // 「システムエラーが発生しました。トップページに遷移します。」

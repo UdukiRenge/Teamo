@@ -121,33 +121,36 @@ export const CustomFolder: React.FC<FolderProps> = ({
   }, [renameFlg, selectedFolder]);
 
   // メニューボックスを開く
-const toggleMenu = (
-  event: React.MouseEvent<HTMLButtonElement>
-) => {
-  const rect = event.currentTarget.getBoundingClientRect();
-  const menuWidth = 200; // メニューの横幅(px)
+  const toggleMenu = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    folder: FolderInterface
+  ) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const menuWidth = 200; // メニューの横幅(px)
 
-  let left = rect.right + window.scrollX;
-  const top = rect.top + window.scrollY - 160;
+    let left = rect.right + window.scrollX;
+    const top = rect.top + window.scrollY - 160;
 
-  // 横はみ出し対策
-  if (left + menuWidth > window.innerWidth) {
-    left = rect.left + window.scrollX - menuWidth; // 左側に出す
-  }
-
-  setMenuPosition((prev) => {
-    // 現在位置と変わらない場合 → メニューを閉じる
-    if (prev.top === top && prev.left === left) {
-      setOpenMenu(!openMenu);
-      return prev; // 位置は変更しない
+    // 横はみ出し対策
+    if (left + menuWidth > window.innerWidth) {
+      left = rect.left + window.scrollX - menuWidth; // 左側に出す
     }
-    // 位置を更新
-    return { top, left };
-  });
 
-  // 新しい位置の場合のみメニューを開く
-  setOpenMenu(!openMenu);
-};
+    setMenuPosition((prev) => {
+      // 現在位置と変わらない場合 → メニューを閉じる
+      if (prev.top === top && prev.left === left) {
+        setOpenMenu(!openMenu);
+        return prev; // 位置は変更しない
+      }
+      // 位置を更新
+      setOpenMenu(true);
+      return { top, left };
+    });
+
+    // 新しい位置の場合のみメニューを開く
+    setSelectedFolder(folder);
+  };
+
   // フォルダ新規作成開始
   const createFolder = () => {
     setCreateFlg(true);
@@ -177,7 +180,7 @@ const toggleMenu = (
     }
     // インプットが空かどうか判別
     if (editFolderName.trim() !== '') {
-      if (checkLength(editFolderName, 50)) {
+      if (!checkLength(editFolderName, 50)) {
         await showErrorModal(messages.ERROR.E016);
         setIsSubmitting(false);
         return;
@@ -273,7 +276,7 @@ const toggleMenu = (
               </button>
               <button
                 className={styles["folderMenu-button"]}
-                onClick={(event) => toggleMenu(event)}
+                onClick={(event) => toggleMenu(event, folder)}
               >
                 <BsThreeDotsVertical color="#a8a8a8" />
               </button>
