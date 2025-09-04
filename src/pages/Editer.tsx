@@ -174,6 +174,11 @@ export const MemoEdit: React.FC<EditProps> = ({
           selectedMemo.text !== text
         )
       ) {
+        const titleCheck = checkLength(title, 50);
+        if (!titleCheck) {
+          await showErrorModal(messages.ERROR.E012);
+          return;
+        }
         const updateData = {
           folder_id: saveFolder ? saveFolder : undefined,
           title: title ? title : undefined,
