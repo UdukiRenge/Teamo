@@ -2,7 +2,7 @@ export const cors = (handler) => async (request, response) => {
   response.setHeader('Access-Control-Allow-Origin', 'https://teamo-uduki-renges-projects.vercel.app');
   response.setHeader('Access-Control-Allow-Credentials', 'true');
   response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
   if (request.method === 'OPTIONS') {
     return response.status(200).end(); // Preflight対応
