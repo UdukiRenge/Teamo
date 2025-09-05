@@ -19,7 +19,7 @@ async function handler(request, response) {
 
       response.setHeader(
         'Set-Cookie',
-        `access_token=${accessToken}; HttpOnly; Path=/; Secure; SameSite=Lax; Max-Age=${15 * 60}`
+        `access_token=${accessToken}; HttpOnly; Path=/; Secure; SameSite=None; Max-Age=${15 * 60}`
       );
 
       return response.status(200).json({
