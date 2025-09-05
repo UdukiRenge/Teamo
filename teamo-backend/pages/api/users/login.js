@@ -13,8 +13,8 @@ async function handler(request, response) {
       const refreshToken = createRefreshToken(loginResult._id);
 
       response.setHeader('Set-Cookie', [
-        `access_token=${accessToken}; HttpOnly; Path=/; Max-Age=900; Secure; SameSite=Lax`,
-        `refresh_token=${refreshToken}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; Secure; SameSite=Lax`,
+        `access_token=${accessToken}; HttpOnly; Path=/; Max-Age=900; Secure; SameSite=None`,
+        `refresh_token=${refreshToken}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; Secure; SameSite=None`,
       ]);
 
       return response.status(200).json({
