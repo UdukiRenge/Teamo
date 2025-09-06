@@ -6,8 +6,8 @@ async function handler(request, response) {
     try {
       // Cookieをクリア
       response.setHeader('Set-Cookie', [
-        'access_token=; HttpOnly; Path=/; Secure; Max-Age=0',
-        'refresh_token=; HttpOnly; Path=/; Secure; Max-Age=0',
+        'access_token=; HttpOnly; Path=/; Secure; Max-Age=0 SameSite=None' ,
+        'refresh_token=; HttpOnly; Path=/; Secure; Max-Age=0 SameSite=None',
       ]);
 
       return response.status(200).json({
