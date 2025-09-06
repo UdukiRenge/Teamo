@@ -57,7 +57,7 @@ const releaseNotes: ReleaseItem[] = [
   },
   {
     date: '2025-09-06',
-    version: 'v3.0.0',
+    version: 'v4.0.0',
     changes: [
       '初回起動時の処理遅延を改善しました。'
     ],
