@@ -9,8 +9,8 @@ async function handler(request, response) {
 
       const loginResult = await loginUser(request.body);
 
-      const accessToken = createAccessToken(loginResult._id);
-      const refreshToken = createRefreshToken(loginResult._id);
+      const accessToken = createAccessToken(request.body._id);
+      const refreshToken = createRefreshToken(request.body._id);
 
       response.setHeader('Set-Cookie', [
         `access_token=${accessToken}; HttpOnly; Path=/; Max-Age=900; Secure; SameSite=None`,
@@ -20,7 +20,7 @@ async function handler(request, response) {
       return response.status(200).json({
         success: true,
         userName: loginResult.userName,
-      });
+      });s
     } catch (error) {
       return errorHandler(response, error);
     }
