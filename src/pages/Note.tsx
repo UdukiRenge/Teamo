@@ -62,6 +62,13 @@ const releaseNotes: ReleaseItem[] = [
       '初回起動時の処理遅延を改善しました。'
     ],
   },
+  {
+    date: '2025-09-29',
+    version: 'v4.1.0',
+    changes: [
+      '不具合修正を行いました。'
+    ],
+  },
 ];
 
 const Note: React.FC = () => {

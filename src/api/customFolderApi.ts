@@ -68,7 +68,7 @@ export const deleteCustomFolder = async (_id: string) => {
     // 削除するフォルダに格納しているメモのフォルダIDをnullで更新
     if (matchMemos.memos.length > 0) {
       await Promise.all(
-        matchMemos.map((matchMemo: MemoInterface) =>
+        matchMemos.memos.map((matchMemo: MemoInterface) =>
           updateMemo(matchMemo._id, { folder_id: null })
         )
       );
