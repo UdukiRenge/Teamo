@@ -6,6 +6,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
 import { viewModeAtom } from '../atoms/viewmodeAtom'
+import { isMobileAtom } from '../atoms/mediaAtom';
 import { useUserContext } from '../contexts/UserContext';
 
 import {
@@ -18,9 +19,10 @@ import { checkLength } from '../services/checkMaxLength';
 
 // カスタムフック
 import { useErrorModal } from '../components/Hooks/useErrorModal';
+import { useAlertModal } from '../components/Hooks/useAlertModal'
 import { usePopup } from '../components/Hooks/usePopup';
 
-import { FolderInterface } from '../constants/stateInterface';
+import { FolderInterface, MemoInterface } from '../constants/stateInterface';
 
 import { messages } from '../constants/message'
 
@@ -30,7 +32,11 @@ interface FolderProps {
   setSelectedFolder: React.Dispatch<
     React.SetStateAction<FolderInterface | null>
   >;
+  setSelectedMemo: React.Dispatch<React.SetStateAction<MemoInterface | null>>;
   onRefresh: () => void;
+  editType: string;
+  isEditting: boolean;
+  setIsEditting: React.Dispatch<React.SetStateAction<boolean>>;  
 }
 
 import styles from './Folder.module.css';
@@ -39,7 +45,11 @@ export const CustomFolder: React.FC<FolderProps> = ({
   folders,
   selectedFolder,
   setSelectedFolder,
+  setSelectedMemo,
   onRefresh,
+  editType,
+  isEditting,
+  setIsEditting
 }) => {
   const [_viewMode, setViewMode] = useAtom(viewModeAtom);
   const { user } = useUserContext();
@@ -62,7 +72,10 @@ export const CustomFolder: React.FC<FolderProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const showErrorModal = useErrorModal();
+  const showAlertModal = useAlertModal();
   const showPopup = usePopup();
+
+  const [isMobile] = useAtom(isMobileAtom);
 
   const creatFolderRef = useRef<HTMLInputElement>(null);
   const renameInputRef = useRef<HTMLInputElement>(null);
@@ -165,9 +178,31 @@ export const CustomFolder: React.FC<FolderProps> = ({
   };
 
   // フォルダボタン押下
-  const pushFolder = (folder: FolderInterface) => {
+  const pushFolder = async (folder: FolderInterface) => {
+    if (isMobile) {
+      const isChange = await changeFolderForMobile();
+
+      if (!isChange) {
+        return;
+      }
+      setIsEditting(false);
+      setSelectedMemo(null);
+    }
     setSelectedFolder(folder);
     setViewMode("files");
+  };
+
+  // モバイルの場合はフォルダの切り替えにより画面が切り替わるので、確認する。
+  const changeFolderForMobile = async () => {
+    let confirm = true;
+    if (isMobile && isEditting) {
+      if (editType === "create") {
+        confirm = await showAlertModal(messages.WARNING.W010);
+      } else if (editType === "update") {
+        confirm = await showAlertModal(messages.WARNING.W011);
+      }
+    }
+    return confirm;
   };
 
   // フォルダインプットからカーソルが外れた場合、またはEnterが押下された時に作成・更新処理を実施
@@ -202,8 +237,11 @@ export const CustomFolder: React.FC<FolderProps> = ({
         const updateData = {
           folder_name: editFolderName,
         };
-        await updateCustomFolder(selectedFolder._id, updateData);
-        showPopup(messages.INFO.I006);
+        const confirm = await showAlertModal(messages.WARNING.W012);
+        if (confirm) {
+          await updateCustomFolder(selectedFolder._id, updateData);
+          showPopup(messages.INFO.I006);
+        }
       }
     }
     setEditFolderName('');
@@ -224,12 +262,14 @@ export const CustomFolder: React.FC<FolderProps> = ({
   };
 
   // 選択されたフォルダを削除する。
-  // const deleteFolder = async (deleteFolderId: string) => {
   const deleteFolder = async () => {
     try {
       if (selectedFolder) {
-        await deleteCustomFolder(selectedFolder._id);
-        showPopup(messages.INFO.I007);
+        const confirm = await showAlertModal(messages.WARNING.W013);
+        if (confirm) {
+          await deleteCustomFolder(selectedFolder._id);
+          showPopup(messages.INFO.I007);
+        }
       }
     } catch {
       // 「システムエラーが発生しました。トップページに遷移します。」

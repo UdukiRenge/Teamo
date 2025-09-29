@@ -120,7 +120,7 @@ export const MemoEdit: React.FC<EditProps> = ({
       }
       if (
         selectedMemo.title !== title ||
-        (selectedMemo.folder_id !== saveFolder && selectedMemo.folder_id) ||
+        (selectedMemo.folder_id !== saveFolder && !(selectedMemo.folder_id === null && saveFolder === "")) ||
         selectedMemo.text !== sanitizeText(text)
       ) {
         setIsEditting(true);
@@ -170,7 +170,7 @@ export const MemoEdit: React.FC<EditProps> = ({
         selectedMemo &&
         (
           selectedMemo.title !== title ||
-          (selectedMemo.folder_id !== saveFolder && selectedMemo.folder_id) ||
+          (selectedMemo.folder_id !== saveFolder) ||
           selectedMemo.text !== text
         )
       ) {
@@ -179,8 +179,9 @@ export const MemoEdit: React.FC<EditProps> = ({
           await showErrorModal(messages.ERROR.E012);
           return;
         }
+        console.log(saveFolder);
         const updateData = {
-          folder_id: saveFolder ? saveFolder : undefined,
+          folder_id: saveFolder ? saveFolder : null,
           title: title ? title : undefined,
           text: text ? sanitizeText(text): undefined
         }

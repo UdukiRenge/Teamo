@@ -142,7 +142,11 @@ const Memo: React.FC = () => {
               folders={folders}
               selectedFolder={selectedFolder}
               setSelectedFolder={setSelectedFolder}
+              setSelectedMemo={setSelectedMemo}
               onRefresh={fetchData}
+              isEditting={isEditting}
+              setIsEditting={setIsEditting}
+              editType={editType}
             />
           </div>
         </aside>
